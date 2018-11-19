@@ -11,28 +11,14 @@ public class Client {
 
     private Socket socket;
 
-    private BufferedReader keyReader;
-
     private DataOutputStream outputStream;
     private DataInputStream inputStream;
-    
-    private PrintWriter writer;
-
-    private BufferedReader reciver;
-
-    private String reciveMessage;
-    private String sendMessage;
 
     public Client() {
         try {
             socket = new Socket("localhost", 8085);
-
-            //        keyReader = new BufferedReader(new InputStreamReader(System.in));
-
-            //writer = new PrintWriter(socket.getOutputStream(), true);
             outputStream = new DataOutputStream(socket.getOutputStream());
             inputStream = new DataInputStream(socket.getInputStream());
-            //        reciver = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -47,14 +33,7 @@ public class Client {
         outputStream.writeInt(arr.length);
         outputStream.write(arr);
 
-//            toSend.writeTo(socket.getOutputStream());
-
-//            if ((reciveMessage = reciver.readLine()) != null) {
-//                System.out.println(toSend.toByteArray());
-//            }
-
         length = inputStream.readInt();
-        System.out.println(length);
         arr = new byte[length];
 
         if(length > 0) {
@@ -62,6 +41,28 @@ public class Client {
 
             toGet = PwrMsg.server_to_clinet.parseFrom(arr);
             System.out.println("\n" + toGet.getTypeValue() + " " + toGet.getIsSuccesful());
+
+            switch (toGet.getTypeValue()) {
+                case 0: { //rejestracja
+                    if(toGet.getIsSuccesful() == true) {
+                        System.out.println("Zarejestrowano pomyślnie");
+                    } else {
+                        System.out.println("Błąd rejestracji");
+                    }
+                    break;
+                }
+                case 1: { //logowanie
+                    if(toGet.getIsSuccesful() == true) {
+                        System.out.println("Zalogowano pomyślnie");
+                    } else {
+                        System.out.println("Błąd logowania");
+                    }
+                    break;
+                }
+                case 2: { //getIp
+
+                }
+            }
         }
     }
 }
