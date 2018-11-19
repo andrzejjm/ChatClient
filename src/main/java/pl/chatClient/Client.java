@@ -25,7 +25,36 @@ public class Client {
     }
 
     public void start() throws Exception {
-        toSend = PwrMsg.clinet_to_server.newBuilder().setTypeValue(2).setLoginString("Micha").build();
+
+        System.out.println("Wybierz operację: " +
+                "\n0. Zarejestruj" +
+                "\n1. Zaloguj" +
+                "\n2. GetIp" +
+                "\n3. Wyloguj" +
+                "\n");
+
+        int opt;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        opt = Integer.parseInt(br.readLine());
+        switch (opt) {
+            case 0:
+                toSend = registerReq("user1", "pass");
+                break;
+            case 1:
+                toSend = loginReq("user1", "pass");
+                break;
+            case 2:
+                toSend = getIpReq("user1");
+                break;
+            case 3:
+                toSend = logoutReq();
+                break;
+
+            default:
+                System.out.println("Err");
+                break;
+        }
+
         byte[] arr = toSend.toByteArray();
         int length = 0;
 
@@ -41,6 +70,7 @@ public class Client {
 
             toGet = PwrMsg.server_to_clinet.parseFrom(arr);
             System.out.println("\n" + toGet.getTypeValue() + " " + toGet.getIsSuccesful());
+            System.out.println("Długość: " + toGet.toByteArray().length);
 
             switch (toGet.getTypeValue()) {
                 case 0: { //rejestracja
@@ -68,5 +98,21 @@ public class Client {
                 }
             }
         }
+    }
+
+    public PwrMsg.clinet_to_server registerReq(String login, String password) {
+        return PwrMsg.clinet_to_server.newBuilder().setTypeValue(0).setLoginString(login).setPasswordString(password).build();
+    }
+
+    public PwrMsg.clinet_to_server loginReq(String login, String password) {
+        return PwrMsg.clinet_to_server.newBuilder().setTypeValue(1).setLoginString(login).setPasswordString(password).build();
+    }
+
+    public PwrMsg.clinet_to_server getIpReq(String login) {
+        return PwrMsg.clinet_to_server.newBuilder().setTypeValue(2).setLoginString(login).build();
+    }
+
+    public PwrMsg.clinet_to_server logoutReq() {
+        return null;
     }
 }
