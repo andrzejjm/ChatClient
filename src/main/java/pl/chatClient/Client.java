@@ -25,7 +25,7 @@ public class Client {
     }
 
     public void start() throws Exception {
-        toSend = PwrMsg.clinet_to_server.newBuilder().setTypeValue(0).setLoginString("Andrzej").setPasswordString("Lol").build();
+        toSend = PwrMsg.clinet_to_server.newBuilder().setTypeValue(2).setLoginString("Micha").build();
         byte[] arr = toSend.toByteArray();
         int length = 0;
 
@@ -60,7 +60,11 @@ public class Client {
                     break;
                 }
                 case 2: { //getIp
-
+                    if(toGet.getIsSuccesful() == true) {
+                        System.out.println(toGet.getSecondClinetIp());
+                    } else {
+                        System.out.println("Błąd pozyskiwania IP");
+                    }
                 }
             }
         }
