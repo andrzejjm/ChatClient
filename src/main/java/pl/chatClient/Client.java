@@ -47,7 +47,7 @@ public class Client {
                 toSend = getIpReq("user1");
                 break;
             case 3:
-                toSend = logoutReq();
+                toSend = logoutReq("user1");
                 break;
 
             default:
@@ -60,15 +60,15 @@ public class Client {
 
         outputStream.flush();
         outputStream.writeInt(arr.length);
-        outputStream.write(arr);
+        outputStream.write(arr); //wysyłanie wiadomości
 
         length = inputStream.readInt();
         arr = new byte[length];
 
         if(length > 0) {
-            inputStream.read(arr, 0, arr.length); // read the message
+            inputStream.read(arr, 0, arr.length);
 
-            toGet = PwrMsg.server_to_clinet.parseFrom(arr);
+            toGet = PwrMsg.server_to_clinet.parseFrom(arr); //parsowanie wiadomości
             System.out.println("\n" + toGet.getTypeValue() + " " + toGet.getIsSuccesful());
             System.out.println("Długość: " + toGet.toByteArray().length);
 
@@ -95,6 +95,15 @@ public class Client {
                     } else {
                         System.out.println("Błąd pozyskiwania IP");
                     }
+                    break;
+                }
+                case 3: { //wyloguj
+                    if(toGet.getIsSuccesful() == true) {
+                        System.out.println("Wylogowano");
+                    } else {
+                        System.out.println("Błąd wylogowywania");
+                    }
+                    break;
                 }
             }
         }
@@ -112,7 +121,7 @@ public class Client {
         return PwrMsg.clinet_to_server.newBuilder().setTypeValue(2).setLoginString(login).build();
     }
 
-    public PwrMsg.clinet_to_server logoutReq() {
-        return null;
+    public PwrMsg.clinet_to_server logoutReq(String login) {
+        return PwrMsg.clinet_to_server.newBuilder().setTypeValue(3).setLoginString(login).build();
     }
 }
