@@ -6,6 +6,7 @@ import java.io.*;
 import java.net.Socket;
 
 public class Client {
+    private String secret = "BSIUIPANY123";
     private PwrMsg.clinet_to_server toSend;
     private PwrMsg.server_to_clinet toGet;
 
@@ -15,6 +16,22 @@ public class Client {
     private DataInputStream inputStream;
 
     public Client() {
+    }
+
+    public byte[] encodeOrDecodeMsg(byte[] bytes){
+	    int size = bytes.length;
+	    byte [] result= new byte[size];
+	    for (int i = 0; i< size; i++)
+	    {
+		for ( char s : secret.toCharArray()) {
+			if(i<size)
+			{
+				result[i]= (byte)(s ^ bytes[i]);
+				i++;
+			}
+		}
+	    }
+	   return result; 
     }
 
     public void start() throws Exception {
@@ -53,6 +70,7 @@ public class Client {
         }
 
         byte[] arr = toSend.toByteArray();
+	arr = encodeOrDecodeMsg(arr); //encode (xor) message with secret
         int length = 0;
 
         outputStream.flush();
