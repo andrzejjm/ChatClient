@@ -14,3 +14,14 @@ Do odbierania wiadomości tworzymy obiekt
 PwrMsg.server_to_client
 ```
 Odbieranie i wysyłanie wiadomości z obsługą błędów w przykładzie.
+<br>
+<br>Po każdym wykonaniu zapytania należy rozłączyć sockety:
+````
+socket.close();
+````
+A przed każdym zapytaniem połączyć:
+````
+socket = new Socket("localhost", 8085);
+outputStream = new DataOutputStream(socket.getOutputStream());
+inputStream = new DataInputStream(socket.getInputStream());
+````

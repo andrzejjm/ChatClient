@@ -6,7 +6,9 @@ public class Main {
 
         client = new Client();
         try {
-            client.start();
+            while (true) {
+                client.start();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

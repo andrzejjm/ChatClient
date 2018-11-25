@@ -15,16 +15,13 @@ public class Client {
     private DataInputStream inputStream;
 
     public Client() {
-        try {
-            socket = new Socket("localhost", 8085);
-            outputStream = new DataOutputStream(socket.getOutputStream());
-            inputStream = new DataInputStream(socket.getInputStream());
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
     }
 
     public void start() throws Exception {
+
+        socket = new Socket("localhost", 8085);
+        outputStream = new DataOutputStream(socket.getOutputStream());
+        inputStream = new DataInputStream(socket.getInputStream());
 
         System.out.println("Wybierz operację: " +
                 "\n0. Zarejestruj" +
@@ -107,6 +104,8 @@ public class Client {
                 }
             }
         }
+
+        socket.close();
     }
 
     public PwrMsg.clinet_to_server registerReq(String login, String password) {
