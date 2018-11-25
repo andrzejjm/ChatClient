@@ -82,7 +82,7 @@ public class Client {
 
         if(length > 0) {
             inputStream.read(arr, 0, arr.length);
-	    arr= encodeOrDecodeMsg(arr) // decode(xor) message with secret
+	    arr= encodeOrDecodeMsg(arr); // decode(xor) message with secret
             toGet = PwrMsg.server_to_clinet.parseFrom(arr); //parsowanie wiadomości
             System.out.println("\n" + toGet.getTypeValue() + " " + toGet.getIsSuccesful());
             System.out.println("Długość: " + toGet.toByteArray().length);
