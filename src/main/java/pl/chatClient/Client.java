@@ -29,6 +29,7 @@ public class Client {
 				result[i]= (byte)(s ^ bytes[i]);
 				i++;
 			}
+			i--;
 		}
 	    }
 	   return result; 
